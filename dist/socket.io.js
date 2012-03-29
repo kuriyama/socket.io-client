@@ -1113,7 +1113,7 @@
    * @api private
    */
 
-  var regexp = /([^:]+):([0-9]+)?(\+)?:([^:]+)?:?([\s\S]*)?/;
+  var regexp = /([^:]+)(?::([0-9]+)?(\+)?:([^:]+)?:?([\s\S]*)?)?/;
 
   parser.decodePacket = function (data) {
     var pieces = data.match(regexp);
@@ -1807,6 +1807,10 @@
       , uri = this.resource + '/' + io.protocol + '/' + this.sessionid;
 
     xhr.open('GET', uri, true);
+
+    if (this.open) {
+      this.of('').packet({ type: 'disconnect' });
+    }
 
     // handle disconnection immediately
     this.onDisconnect('booted');
